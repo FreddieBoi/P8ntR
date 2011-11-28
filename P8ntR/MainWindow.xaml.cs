@@ -40,6 +40,9 @@ namespace P8ntR
         {
             HandleUnsavedChanges();
 
+            // Reset changes
+            UnsavedChanges = false;
+
             // Reset filename
             _fileName = null;
 

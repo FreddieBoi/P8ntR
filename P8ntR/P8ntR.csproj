@@ -86,6 +86,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CustomCommands.cs" />
+    <Compile Include="GreyscaleOnDisabledImage.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -150,19 +151,19 @@
     <None Include="Resources\WindowIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Copy.png" />
+    <Resource Include="Resources\Copy.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Cut.png" />
+    <Resource Include="Resources\Cut.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Paste.png" />
+    <Resource Include="Resources\Paste.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Redo.png" />
+    <Resource Include="Resources\Redo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Undo.png" />
+    <Resource Include="Resources\Undo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

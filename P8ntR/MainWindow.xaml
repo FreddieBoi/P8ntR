@@ -28,6 +28,21 @@
         <KeyBinding Key="Help" Command="n:CustomCommands.About" />
     </Window.InputBindings>
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type Button}" x:Key="toolBarButtonTextStyle">
+                <Setter Property="FontFamily" Value="Palatino Linotype"></Setter>
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="FontSize" Value ="14"></Setter>
+                <Setter Property="CommandTarget" Value="{Binding ElementName=canvas}"></Setter>
+            </Style>
+            <Style TargetType="{x:Type Button}" x:Key="toolBarButtonImageStyle">
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="CommandTarget" Value="{Binding ElementName=canvas}"></Setter>
+            </Style>
+            <Style TargetType="{x:Type MenuItem}" x:Key="menuItemEditStyle">
+                <Setter Property="CommandTarget" Value="{Binding ElementName=canvas}"></Setter>
+            </Style>
+        </Grid.Resources>
         <Menu IsMainMenu="True" VerticalAlignment="Top">
             <MenuItem Header="{x:Static p:Resources.File}" >
                 <MenuItem Header="{x:Static p:Resources.New}" Click="NewMenuItemClick" InputGestureText="Ctrl+N" />
@@ -38,6 +53,33 @@
                 <MenuItem Header="{x:Static p:Resources.Exit}" Click="ExitMenuItemClick" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="{x:Static p:Resources.Edit}">
+                <MenuItem Style="{StaticResource menuItemEditStyle}" Command="ApplicationCommands.Undo">
+                    <MenuItem.Icon>
+                        <n:GreyscaleOnDisabledImage Source="Resources\Undo.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Style="{StaticResource menuItemEditStyle}" Command="ApplicationCommands.Redo">
+                    <MenuItem.Icon>
+                        <n:GreyscaleOnDisabledImage Source="Resources\Redo.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Style="{StaticResource menuItemEditStyle}" Command="ApplicationCommands.Cut">
+                    <MenuItem.Icon>
+                        <n:GreyscaleOnDisabledImage Source="Resources\Cut.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Style="{StaticResource menuItemEditStyle}" Command="ApplicationCommands.Copy">
+                    <MenuItem.Icon>
+                        <n:GreyscaleOnDisabledImage Source="Resources\Copy.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Style="{StaticResource menuItemEditStyle}" Command="ApplicationCommands.Paste">
+                    <MenuItem.Icon>
+                        <n:GreyscaleOnDisabledImage Source="Resources\Paste.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
                 <MenuItem Header="{x:Static p:Resources.ZoomIn}" Click="ZoomInMenuItemClick" InputGestureText="Ctrl++" />
                 <MenuItem Header="{x:Static p:Resources.ZoomOut}" Click="ZoomOutMenuItemClick" InputGestureText="Ctrl+-" />
             </MenuItem>
@@ -45,6 +87,27 @@
                 <MenuItem Header="{x:Static p:Resources.About}" Click="AboutMenuItemClick" />
             </MenuItem>
         </Menu>
+        <DockPanel Name="mainPanel" VerticalAlignment="Stretch" Margin="0,27,0,0">
+            <ToolBar Name="toolBar" Height="30" DockPanel.Dock="Top">
+                <Button Style="{StaticResource toolBarButtonTextStyle}" Command="ApplicationCommands.Cut" ToolTip="Cut">
+                    <n:GreyscaleOnDisabledImage Source="Resources\Cut.png" />
+                </Button>
+                <Button Style="{StaticResource toolBarButtonImageStyle}" Command="ApplicationCommands.Copy" ToolTip="Copy">
+                    <n:GreyscaleOnDisabledImage Source="Resources\Copy.png" />
+                </Button>
+                <Button Style="{StaticResource toolBarButtonImageStyle}" Command="ApplicationCommands.Paste" ToolTip="Paste">
+                    <n:GreyscaleOnDisabledImage Source="Resources\Paste.png" />
+                </Button>
+                <Separator />
+                <Button Style="{StaticResource toolBarButtonImageStyle}" Command="ApplicationCommands.Undo" ToolTip="Undo">
+                    <n:GreyscaleOnDisabledImage Source="Resources\Undo.png" />
+                </Button>
+                <Button Style="{StaticResource toolBarButtonImageStyle}" Command="ApplicationCommands.Redo" ToolTip="Redo">
+                    <n:GreyscaleOnDisabledImage Source="Resources\Redo.png" />
+                </Button>
+            </ToolBar>
+            <Canvas Background="AntiqueWhite" Name="canvas" DockPanel.Dock="Bottom" />
+        </DockPanel>
         <StatusBar Height="23" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom">
             <StatusBarItem>
                 <TextBlock Name="statusText">Ready.</TextBlock>
