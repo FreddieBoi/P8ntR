@@ -1,8 +1,54 @@
 ﻿<Window x:Class="P8ntR.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:p="clr-namespace:P8ntR.Properties"
+        xmlns:n="clr-namespace:P8ntR"
+        Title="{x:Static p:Resources.Title}"
+        Width="800" Height="600"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Name="Main"
+        Closing="WindowClosing">
+    <Window.CommandBindings>
+        <CommandBinding Command="n:CustomCommands.New" Executed="NewCommandExecuted" />
+        <CommandBinding Command="n:CustomCommands.Open" Executed="OpenCommandExecuted" />
+        <CommandBinding Command="n:CustomCommands.Save" Executed="SaveCommandExecuted" />
+        <CommandBinding Command="n:CustomCommands.SaveAs" Executed="SaveAsCommandExecuted" />
+        <CommandBinding Command="n:CustomCommands.About" Executed="AboutCommandExecuted" />
+        <CommandBinding Command="n:CustomCommands.ZoomIn" Executed="ZoomInCommandExecuted" />
+        <CommandBinding Command="n:CustomCommands.ZoomOut" Executed="ZoomOutCommandExecuted" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="n:CustomCommands.New" />
+        <KeyBinding Key="O" Modifiers="Control" Command="n:CustomCommands.Open" />
+        <KeyBinding Key="S" Modifiers="Control" Command="n:CustomCommands.Save" />
+        <KeyBinding Key="S" Modifiers="Control+Shift" Command="n:CustomCommands.SaveAs" />
+        <KeyBinding Key="OemPlus" Modifiers="Control" Command="n:CustomCommands.ZoomIn" />
+        <KeyBinding Key="OemMinus" Modifiers="Control" Command="n:CustomCommands.ZoomOut" />
+        <KeyBinding Key="F1" Modifiers="Alt" Command="n:CustomCommands.About" />
+        <KeyBinding Key="Help" Command="n:CustomCommands.About" />
+    </Window.InputBindings>
     <Grid>
-        
+        <Menu IsMainMenu="True" VerticalAlignment="Top">
+            <MenuItem Header="{x:Static p:Resources.File}" >
+                <MenuItem Header="{x:Static p:Resources.New}" Click="NewMenuItemClick" InputGestureText="Ctrl+N" />
+                <MenuItem Header="{x:Static p:Resources.Open}" Click="OpenMenuItemClick" InputGestureText="Ctrl+O" />
+                <MenuItem Header="{x:Static p:Resources.Save}" Click="SaveMenuItemClick" InputGestureText="Ctrl+S" IsEnabled="{Binding UnsavedChanges, ElementName=Main}" />
+                <MenuItem Header="{x:Static p:Resources.SaveAs}" Click="SaveAsMenuItemClick" InputGestureText="Ctrl+Shft+S" />
+                <Separator />
+                <MenuItem Header="{x:Static p:Resources.Exit}" Click="ExitMenuItemClick" InputGestureText="Alt+F4" />
+            </MenuItem>
+            <MenuItem Header="{x:Static p:Resources.Edit}">
+                <MenuItem Header="{x:Static p:Resources.ZoomIn}" Click="ZoomInMenuItemClick" InputGestureText="Ctrl++" />
+                <MenuItem Header="{x:Static p:Resources.ZoomOut}" Click="ZoomOutMenuItemClick" InputGestureText="Ctrl+-" />
+            </MenuItem>
+            <MenuItem Header="{x:Static p:Resources.Help}">
+                <MenuItem Header="{x:Static p:Resources.About}" Click="AboutMenuItemClick" />
+            </MenuItem>
+        </Menu>
+        <StatusBar Height="23" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="statusText">Ready.</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>
