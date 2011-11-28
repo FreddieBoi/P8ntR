@@ -7,7 +7,7 @@
         Width="800" Height="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Name="Main"
-        Closing="WindowClosing">
+        Closing="WindowClosing" Loaded="WindowLoaded">
     <Window.CommandBindings>
         <CommandBinding Command="n:CustomCommands.New" Executed="NewCommandExecuted" />
         <CommandBinding Command="n:CustomCommands.Open" Executed="OpenCommandExecuted" />
@@ -106,11 +106,11 @@
                     <n:GreyscaleOnDisabledImage Source="Resources\Redo.png" />
                 </Button>
             </ToolBar>
-            <Canvas Background="AntiqueWhite" Name="canvas" DockPanel.Dock="Bottom" />
+            <Canvas Background="White" Name="canvas" DockPanel.Dock="Bottom" />
         </DockPanel>
         <StatusBar Height="23" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom">
             <StatusBarItem>
-                <TextBlock Name="statusText">Ready.</TextBlock>
+                <TextBlock Name="statusText" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

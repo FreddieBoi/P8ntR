@@ -1,7 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Xml;
+using System.Xml.Serialization;
 using Microsoft.Win32;
 
 namespace P8ntR
@@ -14,6 +18,8 @@ namespace P8ntR
         public static DependencyProperty UnsavedChangesProperty = DependencyProperty.Register("UnsavedChanges", typeof(bool), typeof(MainWindow), new PropertyMetadata(default(bool)));
 
         private string _fileName;
+
+        private Painting _painting;
 
         public MainWindow()
         {
@@ -46,7 +52,7 @@ namespace P8ntR
             // Reset filename
             _fileName = null;
 
-            statusText.Text = String.Format("Ready.");
+            statusText.Text = "Ready.";
         }
 
         private void OpenMenuItemClick(object sender, RoutedEventArgs e)
@@ -70,6 +76,31 @@ namespace P8ntR
             if (dialog.ShowDialog() != true) return;
 
             _fileName = dialog.FileName;
+
+            StreamReader streamReader = null;
+            try
+            {
+                var xmlSerializer = new XmlSerializer(typeof(Painting));
+                streamReader = new StreamReader(_fileName);
+                _painting = (Painting)xmlSerializer.Deserialize(streamReader);
+            }
+            catch (XmlException xe)
+            {
+                MessageBox.Show(xe.Message, "XML Parse Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            catch (InvalidOperationException ioe)
+            {
+                MessageBox.Show(ioe.InnerException.Message, "XML Serialization Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            finally
+            {
+                if (streamReader != null)
+                {
+                    streamReader.Close();
+                }
+            }
 
             statusText.Text = String.Format("Painting opened ({0}).", _fileName);
         }
@@ -109,6 +140,31 @@ namespace P8ntR
 
         private void Save()
         {
+            StreamWriter streamWriter = null;
+            try
+            {
+                var xmlSerializer = new XmlSerializer(typeof(Painting));
+                streamWriter = new StreamWriter(_fileName);
+                xmlSerializer.Serialize(streamWriter, _painting);
+            }
+            catch (XmlException xe)
+            {
+                MessageBox.Show(xe.Message, "XML Parse Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            catch (InvalidOperationException ioe)
+            {
+                MessageBox.Show(ioe.Message + (ioe.InnerException != null ? " " + ioe.InnerException.Message : ""), "XML Serialization Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            finally
+            {
+                if (streamWriter != null)
+                {
+                    streamWriter.Close();
+                }
+            }
+
             statusText.Text = String.Format("Painting saved ({0}).", _fileName);
         }
 
@@ -168,6 +224,17 @@ namespace P8ntR
             if (result != MessageBoxResult.Yes) return;
 
             Save();
+        }
+
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            _painting = new Painting();
+
+            statusText.Text = "Ready.";
+
+            var rect = new CustomRectangle(30, 30, 100, 100, Brushes.Red, Brushes.Black, 3);
+            _painting.Shapes.Add(rect);
+            canvas.Children.Add(rect.Shape);
         }
 
     }
